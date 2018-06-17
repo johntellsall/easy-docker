@@ -14,7 +14,7 @@
 - customize (one-off, temporary work/tools; adapt standard services)
 - mission-critical coin flipper, with containerized database
 
-# 1. BASICS: Docker // run package in self-contained unit
+# 1. BASICS // Docker = run package in self-contained unit
 
 *IDEAS*
 image ~ package, list of files
