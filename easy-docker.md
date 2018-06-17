@@ -23,6 +23,10 @@ not installed, container is *process*
 
 options: interactive, terminal
 
+? Clean up (--rm)
+By default a container’s file system persists even after the container exits. This makes debugging a lot easier (since you can inspect the final state) and you retain all your data by default. But if you are running short-term foreground processes, these container file systems can really pile up. If instead you’d like Docker to automatically clean up the container and remove the file system when the container exits, you can add the --rm flag:
+
+
 ## DIAGRAM: computer, computer+VM, computer+containers
 
 ## docker run -it bitnami/node
@@ -114,17 +118,24 @@ THEME: customize standard tool/service
 
 # 3. WEBAPP
 
-## Python randocat
-Dockerfile ~ image specification
-map host drive
-map port
-webapp w/ database
-docker-compose
+*Ideas*
+(Dockerfile = image specification)
+Randocat
+- map host drive
 randocat w/ database
+- docker-compose = cluster specification
+
+## Python randocat
+
+    docker run -p 8080:8080 -it -v $PWD:/app randocat:1 python randocat.py
+
+## Randocat w/ Database
+
+
 
 # XX goodies
 image is just list of files
-save interactive changes into new image: docker commit
+## (docker commit -- save interactive changes into new image: docker commit)
 networking: use guest to operate w/ another guest
 
 # XX sharp edges
@@ -141,6 +152,7 @@ host-guest editing/updates
 docker-compose gets confused
 Docker gets confused too! (won't release unused port)
 
+## (docker ps parent-image)
 
 
 
@@ -156,7 +168,7 @@ Docker gets confused too! (won't release unused port)
 
 
 
-# simple use cases
+# OUTBOX
 
 ## hello world
 image ~ package, list of files
@@ -170,54 +182,53 @@ run -it bash
 run -it (python)
 run -it postgres bash
 
-# customize
+    # customize
 
-## psql host, postgres guest
-Dbeaver
-map port
+    ## psql host, postgres guest
+    Dbeaver
+    map port
 
-## db changes saves with commit
-create own image: powerful but opaque
-? VS: SQL file
+    ## db changes saves with commit
+    create own image: powerful but opaque
+    ? VS: SQL file
 
-? run multiple versions of a database at once
+    ? run multiple versions of a database at once
 
-# webapp
+    # webapp
 
-## Python randocat
-Dockerfile ~ image specification
-map host drive
-map port
+    ## Python randocat
+    Dockerfile ~ image specification
+    map host drive
+    map port
 
-## randocat w/ database
-docker-compose
+    ## randocat w/ database
+    docker-compose
 
+    ## goodies
+    image is just list of files
+    save interactive changes into new image: docker commit
 
-## goodies
-image is just list of files
-save interactive changes into new image: docker commit
-
-## sharp edges
-host vs docker kernel
-host vs guest networking (macos)
-crashed container keeps state
-unfamiliar toolset for similar ideas. hung container = 'dc down' not kill-process
-host-guest editing/updates
-
-
-networking: use guest to operate w/ another guest
-? community: apachebench
-terms/ideas
-TERMs: host, guest
-IDEA: private file system (& network)
-IDEA: image ~package, bunch of files
-IDEA: default command, override w/ bash
+    ## sharp edges
+    host vs docker kernel
+    host vs guest networking (macos)
+    crashed container keeps state
+    unfamiliar toolset for similar ideas. hung container = 'dc down' not kill-process
+    host-guest editing/updates
 
 
-? images on DockerHub/Store
-search; stars
-probably use web first
-"official" images
-? security concerns
-? run ubuntu / redhat
-test packaging
+    networking: use guest to operate w/ another guest
+    ? community: apachebench
+    terms/ideas
+    TERMs: host, guest
+    IDEA: private file system (& network)
+    IDEA: image ~package, bunch of files
+    IDEA: default command, override w/ bash
+
+
+    ? images on DockerHub/Store
+    search; stars
+    probably use web first
+    "official" images
+    ? security concerns
+    ? run ubuntu / redhat
+    test packaging
