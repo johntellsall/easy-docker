@@ -1,15 +1,12 @@
 import logging
 import sys
 
-from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.response import Response
+from sqlalchemy import create_engine
+from wsgiref.simple_server import make_server
 
 
-CAT_DATABASE = [
-    'https://s7d1.scene7.com/is/image/PETCO'
-    '/cat-category-090617-369w-269h-hero-cutout-d'
-]
 PAGE_HTML = '''
 <img src="{image_url}">
 '''
@@ -17,9 +14,15 @@ PORT = 8080
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
+Engine = create_engine('postgresql://postgres:@database/postgres')
+
 
 def view_random_cat(request):
-    cat_url = CAT_DATABASE[0]
+    with Engine.connect() as con:
+        rows = con.execute(
+            'SELECT image FROM cat ORDER BY RANDOM() LIMIT 1')
+
+    cat_url = rows.first()[0]
     return Response(PAGE_HTML.format(image_url=cat_url))
 
 

@@ -466,3 +466,6 @@ run -it postgres bash
 # Resources
 
 - Docker-Compose and Django https://docs.docker.com/compose/django/
+
+- Raw SQL in SQLAlchemy https://chartio.com/resources/tutorials/how-to-execute-raw-sql-in-sqlalchemy/
+- 
