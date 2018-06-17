@@ -8,7 +8,8 @@
 ## THEME: no surprises
 - single artifact re-use btw Dev, QA,and Prod: 
 - easily run locally from scratch (Credstore this week!)
-
+- (be super careful about version numbers!)
+- 
 ## Outline
 - basics (run package in self-contained unit)
 - customize (one-off, temporary work/tools; adapt standard services)
@@ -207,26 +208,74 @@ Randocat
 - map host drive
 randocat w/ database
 
-## Randocat (Docker)
+## Django Hello World w/ Database
 
-- IMAGE: storage-ports across container-host
-- 
-    docker run -p 8080:8080 -it -v $PWD:/app randocat:1 python randocat.py
+### XXXX be super-careful about versions!
 
-## Randocat (Compose)
+Compose example specifies Django < 2.0, default Django docs is 2.0, and is confusingly different!
 
-- move fiddly "docker run" bits into Compose file
-- now we can build, run, and get logs in one command!
-- 
-    $ dc up
-    Creating randocat2_app_1 ... done
-    Attaching to randocat2_app_1
-    app_1  | INFO:root:randocat.py now running on port 8080!
+https://docs.docker.com/compose/django/#define-the-project-components
 
-### add database
+### docker-compose run web django-admin.py startproject composeexample .
 
-- add "database" stanza to Compose
-- how do we access the database? a) in container, b) from host
+    $ ls -l composeexample/ manage.py
+    -rwxr-xr-x  1 johnmitchell  staff  812 Jun 17 11:46 manage.py*
+
+    composeexample/:
+    total 24
+    -rw-r--r--  1 johnmitchell  staff     0 Jun 17 11:46 __init__.py
+    -rw-r--r--  1 johnmitchell  staff  3121 Jun 17 11:46 settings.py
+    -rw-r--r--  1 johnmitchell  staff   771 Jun 17 11:46 urls.py
+    -rw-r--r--  1 johnmitchell  staff   406 Jun 17 11:46 wsgi.py
+
+### add database to composeexample/settings.py
+
+### run: dc up
+
+    Successfully built d081cebc7445
+    Successfully tagged randocatdjango_web:latest
+    Starting randocatdjango_database_1 ... done
+    Recreating randocatdjango_web_1 ... done
+    Attaching to randocatdjango_database_1, randocatdjango_web_1
+    database_1  | 2018-06-17 18:53:09.903 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+    database_1  | 2018-06-17 18:53:09.903 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+    database_1  | 2018-06-17 18:53:09.907 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+    database_1  | 2018-06-17 18:53:09.934 UTC [23] LOG:  database system was shut down at 2018-06-17 18:52:06 UTC
+    database_1  | 2018-06-17 18:53:09.940 UTC [1] LOG:  database system is ready to accept connections
+    web_1       | Performing system checks...
+    web_1       |
+    web_1       | System check identified no issues (0 silenced).
+    web_1       |
+    web_1       | You have 13 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+    web_1       | Run 'python manage.py migrate' to apply them.
+    web_1       | June 17, 2018 - 18:53:11
+    web_1       | Django version 1.11.13, using settings 'composeexample.settings'
+    web_1       | Starting development server at http://0.0.0.0:8000/
+    web_1       | Quit the server with CONTROL-C.
+
+### note: dc build web && dc up
+
+## Randocat Django w/ Database
+
+### dc run web python manage.py startapp randocat
+
+    $ find randocat/
+    randocat/
+    randocat//migrations
+    randocat//migrations/__init__.py
+    randocat//models.py
+    randocat//__init__.py
+    randocat//apps.py
+    randocat//admin.py
+    randocat//tests.py
+    randocat//views.py
+
+### randocat/views.py
+
+    from django.http import HttpResponse
+
+    def index(request):
+        return HttpResponse("Cats &gt; dogs")
 
 #### database from container (testability, flexibility)
 
@@ -392,6 +441,27 @@ run -it postgres bash
     ? run ubuntu / redhat
     test packaging
 
+
+## Randocat Pyramid (Docker)
+
+- IMAGE: storage-ports across container-host
+- 
+    docker run -p 8080:8080 -it -v $PWD:/app randocat:1 python randocat.py
+
+## Randocat Pyramid (Compose)
+
+- move fiddly "docker run" bits into Compose file
+- now we can build, run, and get logs in one command!
+- 
+    $ dc up
+    Creating randocat2_app_1 ... done
+    Attaching to randocat2_app_1
+    app_1  | INFO:root:randocat.py now running on port 8080!
+
+### add database
+
+- add "database" stanza to Compose
+- how do we access the database? a) in container, b) from host
 
 # Resources
 
