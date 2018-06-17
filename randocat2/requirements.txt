@@ -2,3 +2,4 @@ pyramid
 ipdb
 SQLAlchemy==1.0.12
 ipdb
+psycopg2-binary

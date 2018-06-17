@@ -10,8 +10,9 @@ books = Table('book', metadata,
   Column('primary_author', String),
 )
 
-# import ipdb ; ipdb.set_trace()
-engine = create_engine('sqlite:///bookstore.db')
+import ipdb ; ipdb.set_trace()
+# engine = create_engine('sqlite:///bookstore.db')
+engine = create_engine('postgresql://postgres:@database/postgres')
 metadata.create_all(engine)
 
 from sqlalchemy.sql import text
@@ -25,7 +26,7 @@ with engine.connect() as con:
 
     for line in data:
         con.execute(statement, **line)
-        
+
 with engine.connect() as con:
 
     rs = con.execute('SELECT * FROM book')
