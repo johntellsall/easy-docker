@@ -7,7 +7,9 @@ services:
       - "8080:8080"
     volumes:
      - .:/app
-    command: python randocat.py
+    command: python randocat2.py
+    depends_on:
+      - database
 
-  # database:
-  #   image: postgres:10.3
+  database:
+    image: postgres:10.3

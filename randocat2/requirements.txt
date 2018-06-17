@@ -1,2 +1,3 @@
 pyramid
 ipdb
+SQLAlchemy==1.0.12

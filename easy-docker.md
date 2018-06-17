@@ -131,6 +131,28 @@ randocat w/ database
 
 ## Randocat w/ Database
 
+- move fiddly "docker run" bits into Compose file
+- now we can build, run, and get logs in one command!
+- 
+    $ dc up
+    Creating randocat2_app_1 ... done
+    Attaching to randocat2_app_1
+    app_1  | INFO:root:randocat.py now running on port 8080!
+
+### raw database
+
+    dc build && dc run --service app bash
+
+Note lack of "-it", easier network/storage mappings
+
+    root@3dea71452be1:/app# psql -h database -Upostgres -c 'select version()'
+                                                                 version
+
+    -------------------------------------------------------------------------------
+    ---------------------------------------------------
+     PostgreSQL 10.3 (Debian 10.3-1.pgdg90+1) on x86_64-pc-linux-gnu, compiled by g
+    cc (Debian 6.3.0-18+deb9u1) 6.3.0 20170516, 64-bit
+    (1 row)
 
 
 # XX goodies
@@ -232,3 +254,8 @@ run -it postgres bash
     ? security concerns
     ? run ubuntu / redhat
     test packaging
+
+
+# Resources
+
+- Docker-Compose and Django https://docs.docker.com/compose/django/
