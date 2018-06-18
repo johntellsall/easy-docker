@@ -206,76 +206,24 @@ By default a container’s file system persists even after the container exits. 
 - docker-compose = wrapper dev container / cluster specification
 Randocat
 - map host drive
-randocat w/ database
+Randocat w/ database
+- ("Observability Engineering")
+- 
+## Randocat // Pyramid single container
 
-## Django Hello World w/ Database
+- develop by mounting host storage into container
+    + direct control of app code
+- Pyramid doesn't auto-reload by default
+- "demo mode" // dc build web && dc up
+- "dev mode" // dc build && dc run --service app bash
+    + extensive use of ipdb
 
-### XXXX be super-careful about versions!
+## Randocat2 // Pyramid-SqlAlchemy w/ Postgres database
 
-Compose example specifies Django < 2.0, default Django docs is 2.0, and is confusingly different!
-
-https://docs.docker.com/compose/django/#define-the-project-components
-
-### docker-compose run web django-admin.py startproject composeexample .
-
-    $ ls -l composeexample/ manage.py
-    -rwxr-xr-x  1 johnmitchell  staff  812 Jun 17 11:46 manage.py*
-
-    composeexample/:
-    total 24
-    -rw-r--r--  1 johnmitchell  staff     0 Jun 17 11:46 __init__.py
-    -rw-r--r--  1 johnmitchell  staff  3121 Jun 17 11:46 settings.py
-    -rw-r--r--  1 johnmitchell  staff   771 Jun 17 11:46 urls.py
-    -rw-r--r--  1 johnmitchell  staff   406 Jun 17 11:46 wsgi.py
-
-### add database to composeexample/settings.py
-
-### run: dc up
-
-    Successfully built d081cebc7445
-    Successfully tagged randocatdjango_web:latest
-    Starting randocatdjango_database_1 ... done
-    Recreating randocatdjango_web_1 ... done
-    Attaching to randocatdjango_database_1, randocatdjango_web_1
-    database_1  | 2018-06-17 18:53:09.903 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
-    database_1  | 2018-06-17 18:53:09.903 UTC [1] LOG:  listening on IPv6 address "::", port 5432
-    database_1  | 2018-06-17 18:53:09.907 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
-    database_1  | 2018-06-17 18:53:09.934 UTC [23] LOG:  database system was shut down at 2018-06-17 18:52:06 UTC
-    database_1  | 2018-06-17 18:53:09.940 UTC [1] LOG:  database system is ready to accept connections
-    web_1       | Performing system checks...
-    web_1       |
-    web_1       | System check identified no issues (0 silenced).
-    web_1       |
-    web_1       | You have 13 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
-    web_1       | Run 'python manage.py migrate' to apply them.
-    web_1       | June 17, 2018 - 18:53:11
-    web_1       | Django version 1.11.13, using settings 'composeexample.settings'
-    web_1       | Starting development server at http://0.0.0.0:8000/
-    web_1       | Quit the server with CONTROL-C.
-
-### note: dc build web && dc up
-
-## Randocat Django w/ Database
-
-### dc run web python manage.py startapp randocat
-
-    $ find randocat/
-    randocat/
-    randocat//migrations
-    randocat//migrations/__init__.py
-    randocat//models.py
-    randocat//__init__.py
-    randocat//apps.py
-    randocat//admin.py
-    randocat//tests.py
-    randocat//views.py
-
-### randocat/views.py
-
-    from django.http import HttpResponse
-
-    def index(request):
-        return HttpResponse("Cats &gt; dogs")
+- easy to get lost
+    + use host to cheat! Direct control of _database_
+        * create table
+        * populate w/ data
 
 #### database from container (testability, flexibility)
 
